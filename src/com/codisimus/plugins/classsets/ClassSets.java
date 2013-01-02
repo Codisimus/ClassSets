@@ -170,7 +170,6 @@ public class ClassSets extends JavaPlugin implements Listener {
         canHold = canHold(player.getWorld());
         if (canHold && allowOnQuickbar) { //Allow unsusable items on the QuickBar
             //Return if the Player's armor Inventory is not visible
-            player.sendMessage(event.getInventory().getType().toString());
             if (event.getInventory().getType() != InventoryType.CRAFTING) {
                 return;
             }
@@ -531,8 +530,8 @@ public class ClassSets extends JavaPlugin implements Listener {
                     ItemStack[] armor = player.getInventory().getArmorContents();
                     ItemStack boots = armor[0];
                     String set = getItemSet(boots);
-                    if (set == null) {
-                        if (sets.containsKey(playerName)) {
+                    if (set == null) { //Not Full Set
+                        if (sets.containsKey(playerName)) { //Took Set Off
                             sets.remove(playerName);
                             ChangeArmorSetEvent event = new ChangeArmorSetEvent(player, null);
                             pm.callEvent(event);
@@ -541,16 +540,19 @@ public class ClassSets extends JavaPlugin implements Listener {
                     }
 
                     for (int i = 1; i < 4; i++) {
-                        if (!getItemSet(armor[i]).equals(set)) {
-                            if (sets.containsKey(playerName)) {
+                        String s = getItemSet(armor[i]);
+                        if (s == null || !s.equals(set)) { //Not Full Set
+                            if (sets.containsKey(playerName)) { //Took Set Off
                                 sets.remove(playerName);
                                 ChangeArmorSetEvent event = new ChangeArmorSetEvent(player, null);
                                 pm.callEvent(event);
                             }
+                            return;
                         }
                     }
+                    //Full Set
 
-                    if (!sets.contains(playerName) || !sets.getProperty(playerName).equals(set)) {
+                    if (!sets.containsKey(playerName) || !sets.getProperty(playerName).equals(set)) { //New Set
                         sets.setProperty(playerName, set);
                         ChangeArmorSetEvent event = new ChangeArmorSetEvent(player, set);
                         pm.callEvent(event);
