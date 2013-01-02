@@ -1,0 +1,8 @@
+name: ClassSets
+main: com.codisimus.plugins.classsets.ClassSets
+version: 0.1.1
+author: Codisimus
+website: www.codisimus.com
+description: Denies Players from using items for sets that they aren't allowed to use
+startup: postworld
+softdepend: [PhatLoots]
