@@ -16,6 +16,11 @@ public class ChangeArmorSetEvent extends Event {
     public ChangeArmorSetEvent(Player player, String set) {
         this.player = player;
         this.set = set;
+        if (set == null) {
+            player.sendMessage("§4You are no longer wearing a full set of armor");
+        } else {
+            player.sendMessage("§5You are now wearing a full §6" + set + "§5 set!");
+        }
     }
 
     public Player getPlayer() {
